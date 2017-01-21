@@ -6,7 +6,7 @@ var $temperature = $('.temperature');
 var $unit = $('.unit');
 
 function getWeatherData(city, callback) {
-    var apiUrl = 'http://api.openweathermap.org/data/2.5/weather';
+    var apiUrl = '//api.openweathermap.org/data/2.5/weather';
     $.ajax({
         url: apiUrl,
         data: {
@@ -27,7 +27,7 @@ function getWeatherData(city, callback) {
 }
 
 function renderWeatherData() {
-    var imgUrl = 'http://openweathermap.org/img/w/' + state.image + '.png';
+    var imgUrl = '//openweathermap.org/img/w/' + state.image + '.png';
     $weatherIcon.html(`<img src="${imgUrl}">`);
     $location.text(state.location);
     $description.text(state.description);
