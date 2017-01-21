@@ -5,7 +5,16 @@ var $description = $('.description');
 var $temperature = $('.temperature');
 var $unit = $('.unit');
 
-function getWeatherData(city, callback) {
+function getLocation(callback) {
+    var apiUrl = '//ipinfo.io/json';
+    $.ajax({
+        url: apiUrl,
+    }).then(function(data) {
+        callback(data.city)
+    });
+}
+
+function getWeatherData(callback, city) {
     var apiUrl = '//api.openweathermap.org/data/2.5/weather';
     $.ajax({
         url: apiUrl,
@@ -35,8 +44,11 @@ function renderWeatherData() {
     $unit.text(state.unit);
 }
 
-getWeatherData('chennai', renderWeatherData);
+getLocation(getWeatherData.bind(null, renderWeatherData));
 
+
+
+// Celsius to Fahrenheit and vice versa
 $unit.on('click', function() {
    if (state.unit == 'C') {
        state.temperature = Math.round(state.temperature * 1.8 + 32);
