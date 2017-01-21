@@ -1,4 +1,9 @@
 var state;
+var $weatherIcon = $('.weather-icon');
+var $location = $('.location');
+var $description = $('.description');
+var $temperature = $('.temperature');
+var $unit = $('.unit');
 
 function getWeatherData(city, callback) {
     var apiUrl = 'http://api.openweathermap.org/data/2.5/weather';
@@ -14,7 +19,7 @@ function getWeatherData(city, callback) {
             image: data.weather[0].icon,
             location: data.name + ', ' + data.sys.country,
             description: data.weather[0].description,
-            temperature: data.main.temp,
+            temperature: Math.round(data.main.temp),
             unit: 'C'
         }
         callback();
@@ -23,10 +28,23 @@ function getWeatherData(city, callback) {
 
 function renderWeatherData() {
     var imgUrl = 'http://openweathermap.org/img/w/' + state.image + '.png';
-    $('.weather-icon').html(`<img src="${imgUrl}">`);
-    $('.location').text(state.location);
-    $('.description').text(state.description);
-    $('.temperature').html(state.temperature + '&deg; ' + state.unit);
+    $weatherIcon.html(`<img src="${imgUrl}">`);
+    $location.text(state.location);
+    $description.text(state.description);
+    $temperature.html(state.temperature + '&deg; ');
+    $unit.text(state.unit);
 }
 
 getWeatherData('chennai', renderWeatherData);
+
+$unit.on('click', function() {
+   if (state.unit == 'C') {
+       state.temperature = Math.round(state.temperature * 1.8 + 32);
+       state.unit = 'F';
+   } else {
+       state.temperature = Math.round((state.temperature - 32) / 1.8);
+       state.unit = 'C';
+   }
+   $temperature.html(state.temperature + '&deg; ');
+   $unit.text(state.unit);
+});
